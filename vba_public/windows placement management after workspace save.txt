@@ -1,5 +1,5 @@
 Sub windows_place()
-
+' jan 12 2016
 ' copying down location of windows, assumed in iconified status.
 
 Dim i As Integer, wnd As Window
@@ -40,6 +40,9 @@ End Sub
 
 
 Sub windows_relocate()
+' jan 12 2016
+' moving of windows as labeled by their .caption to the locations listed in a range.
+' assumed 100 rows of data consisting for window caption, top and left values.
 
 Dim i As Integer, wnd As Window
 Dim windows_placement() As Variant
