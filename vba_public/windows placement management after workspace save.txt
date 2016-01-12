@@ -1,0 +1,77 @@
+Sub windows_place()
+
+' copying down location of windows, assumed in iconified status.
+
+Dim i As Integer, wnd As Window
+Dim curWnd As Window, curState As XlWindowState
+Dim windows_place(100, 3) As Variant
+Dim wks_destination As Range
+
+Debug.Print "Begin recording windows placement."
+Set curWnd = ActiveWindow
+curState = curWnd.WindowState
+Debug.Print curWnd.Caption
+
+i = 0
+windows_place(0, 0) = "window name"
+windows_place(0, 1) = "left postion"
+windows_place(0, 2) = "top position"
+i = 1
+For Each wnd In Application.Windows
+    wnd.Activate
+    Application.Wait (Now + TimeValue("0:00:01"))
+    Debug.Print "window name: "; wnd.Caption
+    Debug.Print "Left position: "; wnd.Left
+    Debug.Print "Top position: "; wnd.Top
+    windows_place(i, 0) = wnd.Caption
+    windows_place(i, 1) = wnd.Left
+    windows_place(i, 2) = wnd.Top
+    i = i + 1
+Next
+
+curWnd.Activate
+
+Set wks_destination = Range("X10")
+wks_destination.Resize(UBound(windows_place, 1), UBound(windows_place, 2)).Value = windows_place
+curWnd.WindowState = curState
+
+Debug.Print "End recording windows placement."
+End Sub
+
+
+Sub windows_relocate()
+
+Dim i As Integer, wnd As Window
+Dim windows_placement() As Variant
+Dim curWnd As Window, curState As XlWindowState
+Dim wks_destination As Range
+
+Debug.Print "windows relocation begin. "; Now
+i = 1
+windows_placement = Range("X10:AA110")
+Debug.Print windows_placement(1, 1)
+Debug.Print windows_placement(1, 2)
+Debug.Print windows_placement(1, 3)
+Debug.Print windows_placement(1, 4)
+
+i = 2
+For Each wnd In Application.Windows
+    wnd.Activate
+    Application.Wait (Now + TimeValue("0:00:01"))
+    For i = 2 To 100
+    
+    If wnd.Caption = windows_placement(i, 1) Then
+        wnd.Left = windows_placement(i, 2)
+        wnd.Top = windows_placement(i, 3)
+        
+    End If
+    Next
+    
+Next
+
+
+Debug.Print "windows relocation end. "; Now
+
+
+End Sub
+
